@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8" />
+      <title>Predicting Plant Disease</title>
+</head>
+
+<body>
+      <h1>Predicting Plant Disease</h1>
+
+      <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <input type="submit" value="Upload" />
+      </form>
+
+      <div class="prediction"></div>
+
+      <script>
+            // Fungsi untuk memanggil REST API
+            function predict() {
+                  // Mengambil file gambar dari form
+                  const file = document.querySelector("input[name='file']").files[0];
+
+                  // Membuat objek FormData untuk mengirim data ke REST API
+                  const formData = new FormData();
+                  formData.append("file", file);
+
+                  // Mengirim permintaan ke REST API
+                  fetch("http://localhost:8001/predict", {
+                        method: "POST",
+                        body: formData,
+                  })
+                        .then((response) => response.json())
+                        .then((data) => {
+                              // Menampilkan hasil prediksi
+                              document.querySelector(".prediction").innerHTML = data.class;
+                        });
+            }
+
+            // Mengaktifkan fungsi predict saat form disubmit
+            document.querySelector("form").addEventListener("submit", predict);
+      </script>
+</body>
+
+</html>
